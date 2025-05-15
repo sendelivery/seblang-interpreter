@@ -65,6 +65,20 @@ func TestStringLiteral(t *testing.T) {
 	}
 }
 
+func TestStringConcatenation(t *testing.T) {
+	input := `"Hello" + " " + "World!"`
+
+	evaluated := testEval(input)
+	str, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("object is not String. got=%T (%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "Hello World!" {
+		t.Errorf("String has wrong value. got=%q", str.Value)
+	}
+}
+
 func TestEvalBooleanExpression(t *testing.T) {
 	tests := []struct {
 		input    string
@@ -89,6 +103,12 @@ func TestEvalBooleanExpression(t *testing.T) {
 		{"(1 < 2) == false", false},
 		{"(1 > 2) == true", false},
 		{"(1 > 2) == false", true},
+		{`"A" < "B"`, true},
+		{`"A" > "B"`, false},
+		{`"A" == "A"`, true},
+		{`"A" == "B"`, false},
+		{`"A" != "A"`, false},
+		{`"A" != "B"`, true},
 	}
 
 	for _, tt := range tests {
@@ -237,6 +257,10 @@ if (10 > 1) {
 		{
 			"foobar;",
 			"identifier not found: foobar",
+		},
+		{
+			`"Hello" - "World"`,
+			"unknown operator: STRING - STRING",
 		},
 	}
 
