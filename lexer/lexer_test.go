@@ -26,6 +26,12 @@ if (5 < 10) {
 
 10 == 10;
 10 != 9;
+"foobar"
+"foo bar"
+"foo 'bar'"
+"foo \"bar\""
+"hello\n world"
+"hello\t\t\tworld"
 `
 
 	tests := []struct {
@@ -105,6 +111,12 @@ if (5 < 10) {
 		{token.NOT_EQ, "!="},
 		{token.INT, "9"},
 		{token.SEMICOLON, ";"},
+		{token.STRING, "foobar"},
+		{token.STRING, "foo bar"},
+		{token.STRING, "foo 'bar'"},
+		{token.STRING, "foo \\\"bar\\\""},
+		{token.STRING, "hello\\n world"},
+		{token.STRING, "hello\\t\\t\\tworld"},
 		{token.EOF, ""},
 	}
 
