@@ -1,0 +1,49 @@
+let sort = fun(arr) {
+    let length = len(arr)
+    
+    let findMin = fun(arr, smallest) {
+        if (len(arr) == 0) {
+            return smallest
+        }
+
+        if (first(arr) < smallest) {
+            findMin(rest(arr), first(arr))
+        } else {
+            findMin(rest(arr), smallest)
+        }
+    }
+
+    let removeFirst = fun(arr, target) {
+        let iter = fun(arr, result, found) {
+            if (len(arr) == 0) {
+                return result
+            }
+
+            let head = first(arr)
+            if (head == target) {
+                if (!found) {
+                    return iter(rest(arr), result, true)
+                }
+            } else {
+                return iter(rest(arr), push(result, head), found)
+            }
+        }
+        iter(arr, [], false)
+    }
+
+    let iter = fun(arr, result) {
+        if (len(arr) == 0) {
+            return result
+        }
+        let min = findMin(arr, 1000)
+        let newArr = removeFirst(arr, min)
+        iter(newArr, push(result, min))
+    }
+
+    iter(arr, [])
+}
+
+let unsorted = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+puts("Unsorted arr:", unsorted)
+
+puts("Sorted arr:", sort(unsorted))

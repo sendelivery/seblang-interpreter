@@ -1,0 +1,35 @@
+let map = fun(arr, f) {
+    let iter = fun(arr, accumulated) {
+        if (len(arr) == 0) {
+            accumulated
+        } else {
+            iter(rest(arr), push(accumulated, f(first(arr))));
+        }
+    };
+
+    iter(arr, []);
+};
+
+let reduce = fun(arr, initial, f) {
+    let iter = fun(arr, result) {
+        if (len(arr) == 0) {
+            result
+        } else {
+            iter(rest(arr), f(result, first(arr)));
+        }
+    };
+
+    iter(arr, initial);
+}
+
+let arr_A = [1, 2, 3, 4];
+let double = fun(x) { x * 2 };
+map(arr_A, double);
+puts(arr_A)
+
+let arr_B = ["a", "b", "c", "d"]
+let sum = fun(accum, el) { accum + el }
+puts(reduce(arr_B, "", sum))
+
+let arr_C = [10, 20, 30, 40]
+puts(reduce(arr_C, 0, sum))
